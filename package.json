@@ -8,7 +8,7 @@
   ],
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "lerna exec --parallel yarn test",
     "build": "lerna exec --parallel yarn build",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
     "clean": "rimraf node_modules yarn.lock"
