@@ -1,6 +1,6 @@
 {
   "name": "@bde/apps",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Mono repo for BDE projects",
   "main": "index.js",
   "workspaces": [
@@ -12,11 +12,12 @@
     "test": "lerna exec --parallel yarn test",
     "build": "lerna exec --parallel yarn build",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
-    "clean": "rimraf node_modules yarn.lock"
+    "clean": "rimraf node_modules yarn.lock",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BigDaoEnergy/apps.git"
+    "url": "https://github.com/BigDaoEnergy/apps.git"
   },
   "author": "",
   "license": "MIT",
@@ -37,6 +38,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "lerna": "^3.22.1",
     "prettier": "^2.5.1",
+    "semantic-release": "^18.0.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   }
