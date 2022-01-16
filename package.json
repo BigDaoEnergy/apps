@@ -13,6 +13,7 @@
     "build": "lerna exec --parallel yarn build",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
     "clean": "rimraf node_modules yarn.lock",
+    "start": "lerna exec --parallel yarn start",
     "semantic-release": "semantic-release"
   },
   "repository": {
