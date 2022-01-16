@@ -1,10 +1,11 @@
+//SPDX-License-Identifier: MIT
+
 // File: contracts/Timelock.sol
 // same as this https://etherscan.io/address/0x6d903f6003cca6255d85cca4d3b5e5146dc33925#code
 
 pragma solidity ^0.8.0;
 
 import "./libs/SafeMath.sol";
-
 contract Timelock {
     using SafeMath for uint;
 

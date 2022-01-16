@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
@@ -73,5 +74,8 @@ contract GovernorDelegator is GovernorDelegatorStorage, GovernorEvents {
               case 0 { revert(free_mem_ptr, returndatasize()) }
               default { return(free_mem_ptr, returndatasize()) }
         }
+    }
+
+    receive() external payable {
     }
 }
