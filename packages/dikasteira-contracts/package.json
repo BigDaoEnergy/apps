@@ -1,5 +1,5 @@
 {
-  "name": "@bde/dikasteria",
+  "name": "@bde/dikasteira",
   "license": "MIT",
   "scripts": {
     "build": "yarn hardhat compile",

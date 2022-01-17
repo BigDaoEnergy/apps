@@ -10,7 +10,7 @@
   "scripts": {
     "compile": "lerna exec --parallel npx hardhat compile",
     "test": "lerna exec --parallel yarn test",
-    "build": "lerna exec --parallel yarn build",
+    "build": "lerna exec --scope @bde/apps yarn build",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
     "clean": "rimraf node_modules yarn.lock",
     "start": "lerna exec --scope @bde/apps yarn start",
