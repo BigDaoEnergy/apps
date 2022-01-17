@@ -1,6 +1,7 @@
 {
   "name": "@bde/dikasteira",
   "license": "MIT",
+  "version": "0.0.0",
   "scripts": {
     "build": "yarn hardhat compile",
     "compile": "yarn hardhat compile",

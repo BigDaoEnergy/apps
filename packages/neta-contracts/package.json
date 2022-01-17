@@ -1,12 +1,14 @@
 {
   "name": "@bde/neta",
   "license": "MIT",
+  "version": "0.0.0",
   "scripts": {
     "build": "yarn hardhat compile",
     "compile": "yarn hardhat compile",
     "test": "yarn hardhat test"
   },
   "devDependencies": {
+    "@ethersproject/providers": "^5.5.2",
     "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@nomiclabs/hardhat-etherscan": "^2.1.8",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
