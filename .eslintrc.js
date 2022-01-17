@@ -40,7 +40,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     // prettier
     'prettier/prettier': 'error',
-    'simple-import-sort/sort': 'error',
+    'simple-import-sort/imports': 'error',
     '@typescript-eslint/no-unused-vars': [
       'error',
       { vars: 'all', args: 'after-used', ignoreRestSiblings: false, argsIgnorePattern: "^_"},
