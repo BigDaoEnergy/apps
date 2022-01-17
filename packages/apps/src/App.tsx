@@ -1,13 +1,44 @@
-
-import { Box } from '@chakra-ui/react';
 import React from 'react';
+import {
+  Box,
+  Center,
+  ChakraProvider,
+  Container,
+  extendTheme,
+  Flex,
+  HStack,
+  Icon,
+} from '@chakra-ui/react';
+import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
+import { SiReadthedocs } from 'react-icons/si';
 
-import { ChakraProvider } from "@chakra-ui/react"
+const theme = extendTheme({
+  config: {
+    cssVarPrefix: 'ck',
+  },
+});
 
 // Do this at the root of your application
 function App() {
-  return <ChakraProvider><Box>
-    hi
-    </Box></ChakraProvider>
+  function a() {}
+  return (
+    <ChakraProvider theme={theme}>
+      <Container>
+        <Center>
+          <Flex direction={'column'} alignItems={'center'}>
+            <Box>BigDAOEnergy</Box>
+            <Center>
+              <HStack spacing='24px'>
+                <Icon as={FaDiscord} />
+                <Icon as={FaTwitter} />
+                <Icon as={FaEthereum} />
+                <Icon as={SiReadthedocs} />
+              </HStack>
+            </Center>
+          </Flex>
+        </Center>
+      </Container>
+    </ChakraProvider>
+  );
 }
 export default App;
