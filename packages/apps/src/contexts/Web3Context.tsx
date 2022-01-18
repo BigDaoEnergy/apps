@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import * as ethers from 'ethers';
 import Web3Modal from 'web3modal';
 
@@ -41,7 +35,7 @@ export function Web3ContextProvider({
     const instance = await web3Modal.connect();
 
     setProvider(new ethers.providers.Web3Provider(instance));
-  }, [ethers, web3Modal]);
+  }, []);
 
   return (
     <Web3Context.Provider value={{ connectWallet, provider }}>

@@ -1,14 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Center,
-  ChakraProvider,
-  Container,
-  HStack,
-  Heading,
-  Icon,
-  VStack,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Center, ChakraProvider, Container } from '@chakra-ui/react';
 
 import { Web3Context, Web3ContextProvider } from './contexts';
 import { theme } from './shared/theme';
