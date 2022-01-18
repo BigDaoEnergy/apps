@@ -1,3 +1,3 @@
-import { Web3ContextProvider } from './Web3Context';
+import { Web3Context, Web3ContextProvider } from './Web3Context';
 
-export { Web3ContextProvider };
+export { Web3Context, Web3ContextProvider };

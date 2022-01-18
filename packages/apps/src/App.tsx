@@ -1,46 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Center,
   ChakraProvider,
   Container,
-  extendTheme,
-  Flex,
   HStack,
   Heading,
   Icon,
   VStack,
 } from '@chakra-ui/react';
-import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
-import { SiReadthedocs } from 'react-icons/si';
 
-import { Web3ContextProvider } from './contexts';
-
-const theme = extendTheme({
-  config: {
-    cssVarPrefix: 'ck',
-  },
-});
+import { Web3Context, Web3ContextProvider } from './contexts';
+import { theme } from './shared/theme';
+import Landing from './pages/Landing';
 
 // Do this at the root of your application
 function App() {
   return (
     <Web3ContextProvider>
       <ChakraProvider theme={theme}>
-        <Container>
-          <Center height={'100vh'}>
-            <VStack direction={'column'} alignItems={'center'}>
-              <Heading>BigDAOEnergy</Heading>
-              <Center>
-                <HStack spacing='24px'>
-                  <Icon as={FaDiscord} />
-                  <Icon as={FaTwitter} />
-                  <Icon as={FaEthereum} />
-                  <Icon as={SiReadthedocs} />
-                </HStack>
+        <Web3Context.Consumer>
+          {() => (
+            <Container>
+              <Center height={'100vh'}>
+                <Landing />
               </Center>
-            </VStack>
-          </Center>
-        </Container>
+            </Container>
+          )}
+        </Web3Context.Consumer>
       </ChakraProvider>
     </Web3ContextProvider>
   );
