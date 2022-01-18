@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.20",
     "eslint-config-react-app": "^7.0.0"
   }
 }

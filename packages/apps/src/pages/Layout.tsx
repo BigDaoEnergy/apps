@@ -1,6 +1,40 @@
-import { Center, Container, Link, HStack } from '@chakra-ui/react';
-import React from 'react';
+import {
+  Button,
+  Center,
+  Container,
+  Link,
+  HStack,
+  Text,
+  Heading,
+} from '@chakra-ui/react';
+import React, { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+
+import { Web3Context } from '../contexts';
+
+const NavBar = () => {
+  const { connectWallet, provider } = useContext(Web3Context);
+
+  return (
+    <HStack spacing='14' justifyContent='flex-end' padding='30px'>
+      <Link as={RouterLink} to='/about' color='white'>
+        About
+      </Link>
+      <Link as={RouterLink} to='/team' color='white'>
+        Team
+      </Link>
+      <Link as={RouterLink} to='/rtfm' color='white'>
+        RTFM
+      </Link>
+
+      {!!provider ? (
+        <Text color='whiteAlpha.900'>Connected as: {}</Text>
+      ) : (
+        <Button onClick={() => connectWallet}>Connect Wallet</Button>
+      )}
+    </HStack>
+  );
+};
 
 interface Props {
   children: React.ReactNode;
@@ -8,16 +42,12 @@ interface Props {
 
 function Layout({ children }: Props) {
   return (
-    <Container>
-      <Center height={'100vh'}>
-        <HStack>
-          <Link as={RouterLink} to='/about'>
-            About
-          </Link>
-        </HStack>
-        {children}
-      </Center>
-    </Container>
+    <>
+      <NavBar />
+      <Container>
+        <Center height={'91.4vh'}>{children}</Center>
+      </Container>
+    </>
   );
 }
 
