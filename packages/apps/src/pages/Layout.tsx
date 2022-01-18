@@ -5,7 +5,6 @@ import {
   Link,
   HStack,
   Text,
-  Heading,
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';

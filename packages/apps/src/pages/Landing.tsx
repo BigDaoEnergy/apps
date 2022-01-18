@@ -1,16 +1,7 @@
-import React, { useContext } from 'react';
-import {
-  Button,
-  Center,
-  HStack,
-  Heading,
-  Icon,
-  VStack,
-  Text,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Center, HStack, Heading, Icon, VStack, Text } from '@chakra-ui/react';
 import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
 import { SiReadthedocs } from 'react-icons/si';
-import { Web3Context } from '../contexts';
 
 interface Props {}
 

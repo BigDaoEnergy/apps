@@ -1,5 +1,5 @@
 import React from 'react';
-import { Center, ChakraProvider, Container } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Web3Context, Web3ContextProvider } from './contexts';
