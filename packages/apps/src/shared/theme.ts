@@ -18,8 +18,9 @@ const theme = extendTheme({
     global: (props: any) => ({
       body: {
         fontFamily: 'body',
-        color: mode('gray.800', 'whiteAlpha.900')(props),
-        bg: mode('#7900FF', 'gray.800')(props),
+        color: mode('gray.800', 'whiteAslpha.900')(props),
+        bgGradient:
+          'linear(to-tr, rgba(9,0,158,1) 0%, rgba(121,0,255,1) 35%, rgba(0,212,255,1) 100%)',
         lineHeight: 'base',
       },
       button: {

@@ -1,37 +1,23 @@
-import React, { useContext } from 'react';
-import {
-  Button,
-  Center,
-  HStack,
-  Heading,
-  Icon,
-  VStack,
-  Text,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Center, HStack, Heading, Icon, VStack, Text } from '@chakra-ui/react';
 import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
 import { SiReadthedocs } from 'react-icons/si';
-import { Web3Context } from '../contexts';
 
 interface Props {}
 
 function Landing(props: Props) {
-  const { connectWallet, provider } = useContext(Web3Context);
-
   return (
     <VStack direction={'column'} alignItems={'center'}>
-      <Heading color='whiteAlpha.900'>BigDAOEnergy</Heading>
-      {!!provider ? (
-        <Text color='whiteAlpha.900'>Connected as: {}</Text>
-      ) : (
-        <Button onClick={() => connectWallet}>Connect Wallet</Button>
-      )}
-
+      <Heading size='4xl' color='whiteAlpha.900'>
+        BigDAOEnergy
+      </Heading>
+      <Text color='white'>We build DAO coordination games and frameworks.</Text>
       <Center>
-        <HStack spacing='24px'>
-          <Icon as={FaDiscord} />
-          <Icon as={FaTwitter} />
-          <Icon as={FaEthereum} />
-          <Icon as={SiReadthedocs} />
+        <HStack spacing='24px' marginTop='30'>
+          <Icon as={FaDiscord} color='whiteAlpha.900' />
+          <Icon as={FaTwitter} color='whiteAlpha.900' />
+          <Icon as={FaEthereum} color='whiteAlpha.900' />
+          <Icon as={SiReadthedocs} color='whiteAlpha.900' />
         </HStack>
       </Center>
     </VStack>
