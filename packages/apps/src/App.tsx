@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Web3Context, Web3ContextProvider } from './contexts';
 import { theme } from './shared/theme';
-import Landing from './pages/Landing';
+import { About, Landing, Layout, RTFM, Team } from './pages';
 
 // Do this at the root of your application
 function App() {
@@ -14,16 +14,14 @@ function App() {
         <ChakraProvider theme={theme}>
           <Web3Context.Consumer>
             {() => (
-              <Container>
-                <Center height={'100vh'}>
-                  <Routes>
-                    <Route path='/' element={<Landing />} />
-                    <Route path='/about' element={<Landing />} />
-                    <Route path='/team' element={<Landing />} />
-                    <Route path='/rtfm' element={<Landing />} />
-                  </Routes>
-                </Center>
-              </Container>
+              <Layout>
+                <Routes>
+                  <Route path='/' element={<Landing />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/team' element={<Team />} />
+                  <Route path='/rtfm' element={<RTFM />} />
+                </Routes>
+              </Layout>
             )}
           </Web3Context.Consumer>
         </ChakraProvider>
