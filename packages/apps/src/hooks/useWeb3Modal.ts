@@ -6,14 +6,14 @@ import Web3Modal from 'web3modal';
 
 // Enter a valid infura key here to avoid being rate limited
 // You can get a key for free at https://infura.io/register
-const INFURA_ID = 'INVALID_INFURA_KEY';
+// const INFURA_ID = 'INVALID_INFURA_KEY';
 
 const NETWORK = 'mainnet';
 
 function useWeb3Modal(config: any = {}) {
   const [provider, setProvider] = useState<Web3Provider>();
   const [autoLoaded, setAutoLoaded] = useState(false);
-  const { autoLoad = true, infuraId = INFURA_ID, network = NETWORK } = config;
+  const { autoLoad = true, network = NETWORK } = config;
 
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal

@@ -20,7 +20,14 @@ const NavBar = () => {
         <Link as={RouterLink} to='/team' color='white'>
           Team
         </Link>
-        <Link as={RouterLink} to='/rtfm' color='white'>
+        <Link
+          as={RouterLink}
+          to={{
+            pathname: 'https://bigdaoenergy.gitbook.io/',
+          }}
+          target='_blank'
+          color='white'
+        >
           RTFM
         </Link>
         <ConnectWeb3Button
