@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 
-contract BigDaoEnergy is ERC20, ERC20Capped, Ownable {
+contract BigDaoEnergy is ERC20Capped, Ownable {
   // indicates if minting is finished
   bool private _mintingFinished = false;
 
@@ -46,14 +46,14 @@ contract BigDaoEnergy is ERC20, ERC20Capped, Ownable {
    * @param name Name of the token
    * @param symbol A symbol to be used as ticker
    * @param cap Maximum number of tokens mintable
-   * @param initialSupply Initial token supply
    */
   constructor(
     string memory name,
     string memory symbol,
-    uint256 cap,
-    uint256 initialSupply
-  ) public ERC20Capped(cap) ERC20(name, symbol) {
+    uint256 cap
+  ) ERC20Capped(cap) ERC20(name, symbol) {}
+
+  function initialMint(uint256 initialSupply) external {
     if (initialSupply > 0) {
       _mint(owner(), initialSupply);
     }
@@ -71,23 +71,6 @@ contract BigDaoEnergy is ERC20, ERC20Capped, Ownable {
    */
   function transferEnabled() public view returns (bool) {
     return _transferEnabled;
-  }
-
-  /**
-   * @dev Function to mint tokens.
-   * @param to The address that will receive the minted tokens
-   * @param value The amount of tokens to mint
-   */
-  function _mint(address to, uint256 value)
-    internal
-    override(ERC20, ERC20Capped)
-    canMint
-  {
-    _mint(to, value);
-  }
-
-  function mint(address to, uint256 value) external {
-    _mint(to, value);
   }
 
   /**
