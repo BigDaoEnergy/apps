@@ -40,7 +40,7 @@ function Landing() {
   return (
     <VStack direction={'column'} alignItems={'center'} width='3xl'>
       <Heading size='3xl' color='whiteAlpha.900' marginBottom='15px'>
-        We build DAO coordination games.
+        We build composable governance legos.
       </Heading>
       <BluelistInput provider={provider} />
       <Center>
