@@ -1,31 +1,6 @@
-import {
-  Button,
-  Center,
-  Container,
-  Link,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
-import React, { useContext } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
-import { Web3Context } from '../contexts';
-
-const NavBar = () => {
-  return (
-    <HStack spacing='14' justifyContent='flex-end' padding='30px'>
-      <Link as={RouterLink} to='/about' color='white'>
-        About
-      </Link>
-      <Link as={RouterLink} to='/team' color='white'>
-        Team
-      </Link>
-      <Link as={RouterLink} to='/rtfm' color='white'>
-        RTFM
-      </Link>
-    </HStack>
-  );
-};
+import { Center, Container } from '@chakra-ui/react';
+import React from 'react';
+import Navbar from '../components/Navbar';
 
 interface Props {
   children: React.ReactNode;
@@ -34,7 +9,7 @@ interface Props {
 function Layout({ children }: Props) {
   return (
     <>
-      <NavBar />
+      <Navbar />
       <Container>
         <Center height={'91.4vh'}>{children}</Center>
       </Container>

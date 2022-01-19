@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useState } from 'react';
+import { Web3Provider } from '@ethersproject/providers';
+import React, { useCallback } from 'react';
 import {
   Center,
   HStack,
@@ -6,55 +7,39 @@ import {
   Icon,
   VStack,
   Text,
-  Input,
   Button,
 } from '@chakra-ui/react';
 import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
 import { SiReadthedocs } from 'react-icons/si';
 
-import { ConnectWeb3Button } from '../components';
 import { useWeb3Modal } from '../hooks';
 
-enum BluelistInputErrors {
-  ADDRESS_NOT_VALID,
-  ADDESS_LENGTH,
-  NONE,
+interface Props {
+  provider?: Web3Provider | (() => Promise<void>);
 }
 
-function BluelistInput() {
-  // const { provider } = useContext(Web3Context);
-
-  const [input, setInput] = useState<string>();
-  const [error, setError] = useState<BluelistInputErrors>(
-    BluelistInputErrors.NONE
-  );
-
+function BluelistInput({ provider }: Props) {
   const handleBluelist = useCallback(() => {}, []);
 
   return (
     <VStack justifyContent='center'>
-      <Input isInvalid={error !== BluelistInputErrors.NONE} value={input} />
-      <Button onClick={() => handleBluelist()}>Bluelist Me!</Button>
+      <Button disabled={!provider} onClick={() => handleBluelist()}>
+        Bluelist Me!
+      </Button>
     </VStack>
   );
 }
 
-interface Props {}
-
-function Landing(props: Props) {
-  const [provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();
+function Landing() {
+  const [provider] = useWeb3Modal();
 
   return (
     <VStack direction={'column'} alignItems={'center'}>
       <Heading size='4xl' color='whiteAlpha.900'>
-        BigDAOEnergy
+        bigDAOenergy
       </Heading>
       <Text color='white'>We build DAO coordination games and frameworks.</Text>
-      <ConnectWeb3Button
-        provider={provider}
-        loadWeb3Modal={loadWeb3Modal}
-        logoutOfWeb3Modal={logoutOfWeb3Modal}
-      />
+      <BluelistInput provider={provider} />
       <Center>
         <HStack spacing='24px' marginTop='30'>
           <Icon as={FaDiscord} color='whiteAlpha.900' />

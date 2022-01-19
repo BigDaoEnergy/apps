@@ -23,7 +23,7 @@ function useWeb3Modal(config: any = {}) {
       cacheProvider: true,
       providerOptions: {},
     });
-  }, [infuraId, network]);
+  }, [network]);
 
   // Open wallet selection modal.
   const loadWeb3Modal = useCallback(async () => {

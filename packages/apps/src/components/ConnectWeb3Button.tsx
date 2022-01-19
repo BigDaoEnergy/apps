@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Button, HStack, Icon, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 function ConnectWeb3Button({
@@ -49,7 +49,17 @@ function ConnectWeb3Button({
       }}
     >
       {rendered === '' && 'Connect Wallet'}
-      {rendered !== '' && rendered}
+      {rendered !== '' && (
+        <HStack>
+          <Text>Connected As: {rendered}</Text>
+          <Icon viewBox='0 0 200 200' color='green.500'>
+            <path
+              fill='currentColor'
+              d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+            />
+          </Icon>
+        </HStack>
+      )}
     </Button>
   );
 }
