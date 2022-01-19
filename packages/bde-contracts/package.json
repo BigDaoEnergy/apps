@@ -25,5 +25,8 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.2"
+  },
+  "scripts": {
+    "compile": "npx hardhat compile"
   }
 }

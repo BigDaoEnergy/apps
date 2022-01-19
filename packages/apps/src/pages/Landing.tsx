@@ -23,7 +23,11 @@ function BluelistInput({ provider }: Props) {
 
   return (
     <VStack justifyContent='center'>
-      <Button disabled={!provider} onClick={() => handleBluelist()}>
+      <Button
+        className='button-secondary'
+        disabled={!provider}
+        onClick={() => handleBluelist()}
+      >
         Bluelist Me!
       </Button>
     </VStack>
@@ -34,11 +38,10 @@ function Landing() {
   const [provider] = useWeb3Modal();
 
   return (
-    <VStack direction={'column'} alignItems={'center'}>
-      <Heading size='4xl' color='whiteAlpha.900'>
-        bigDAOenergy
+    <VStack direction={'column'} alignItems={'center'} width='3xl'>
+      <Heading size='3xl' color='whiteAlpha.900' marginBottom='15px'>
+        We build DAO coordination games.
       </Heading>
-      <Text color='white'>We build DAO coordination games and frameworks.</Text>
       <BluelistInput provider={provider} />
       <Center>
         <HStack spacing='24px' marginTop='30'>

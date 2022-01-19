@@ -23,8 +23,12 @@ const theme = extendTheme({
           'linear(to-tr, rgba(9,0,158,1) 0%, rgba(121,0,255,1) 35%, rgba(0,212,255,1) 100%)',
         lineHeight: 'base',
       },
-      button: {
+      '.button-primary': {
         bg: mode('#548CFF', 'gray.800')(props),
+      },
+      '.button-secondary': {
+        bgGradient:
+          'linear(to-tr, rgba(147,255,216,1) 0%, rgba(84,140,255,1) 100%)',
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props),
