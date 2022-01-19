@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useState } from 'react';
-import * as ethers from 'ethers';
+import { Web3Provider } from '@ethersproject/providers';
 import Web3Modal from 'web3modal';
 
 interface Web3ContextType {
@@ -26,7 +26,7 @@ const web3Modal = new Web3Modal({
 export function Web3ContextProvider({
   children,
 }: Web3ContextProviderInterface) {
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>(
+  const [provider, setProvider] = useState<Web3Provider>(
     window.ethereum
   );
 
@@ -34,7 +34,7 @@ export function Web3ContextProvider({
     console.log('here');
     const instance = await web3Modal.connect();
 
-    setProvider(new ethers.providers.Web3Provider(instance));
+    
   }, []);
 
   return (
