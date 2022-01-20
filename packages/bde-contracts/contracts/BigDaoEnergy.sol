@@ -13,6 +13,9 @@ contract BigDaoEnergy is ERC20Capped, Ownable {
   // indicates if transfer is enabled
   bool private _transferEnabled = false;
 
+  mapping(address => bool) whitelist;
+  uint256 whitelistCount = 0;
+
   /**
    * @dev Emitted during finish minting
    */
@@ -22,6 +25,11 @@ contract BigDaoEnergy is ERC20Capped, Ownable {
    * @dev Emitted during transfer enabling
    */
   event TransferEnabled();
+
+  /**
+   * @dev Emitted when someone joins the whitelist
+   */
+  event JoinedWhitelist(address who);
 
   /**
    * @dev Tokens can be minted only before minting finished.
@@ -57,6 +65,17 @@ contract BigDaoEnergy is ERC20Capped, Ownable {
     if (initialSupply > 0) {
       _mint(owner(), initialSupply);
     }
+  }
+
+  function joinWhitelist() external {
+    // check not already whitelisted
+    require(whitelist[msg.sender] == false, 'you are already on the whitelist');
+    // check whitelist size under 10000
+    require(whitelistCount < 10000, 'whitelist cap reached.');
+
+    whitelist[msg.sender] = true;
+
+    emit JoinedWhitelist(msg.sender);
   }
 
   /**
