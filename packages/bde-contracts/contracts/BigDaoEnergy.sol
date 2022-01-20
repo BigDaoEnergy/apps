@@ -78,6 +78,10 @@ contract BigDaoEnergy is ERC20Capped, Ownable {
     emit JoinedWhitelist(msg.sender);
   }
 
+  function amIWhitelisted() external view returns (bool) {
+    return whitelist[msg.sender];
+  }
+
   /**
    * @return if minting is finished or not.
    */

@@ -38,6 +38,8 @@ describe('Big DAO Energy Token', function () {
 
     it('should join whitelist', async function() {
       expect(await BDE.connect(ALICE).joinWhitelist()).to.emit(BDE, "JoinedWhitelist");
+
+      expect(await BDE.connect(ALICE).amIWhitelisted()).to.equal(true);
     })
   })
 });
