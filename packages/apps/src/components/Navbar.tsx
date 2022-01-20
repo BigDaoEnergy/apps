@@ -1,4 +1,4 @@
-import { Link, HStack, Heading } from '@chakra-ui/react';
+import { Link, HStack, Heading, Image } from '@chakra-ui/react';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const NavBar = () => {
   return (
     <HStack justifyContent={'space-between'}>
       <Link as={RouterLink} to='/' color='white' padding='30px'>
-        <Heading>bigDAOenergy</Heading>
+        <Image src={'white-logo.png'} width='250px' />
       </Link>
       <HStack spacing='14' justifyContent='flex-end' padding='30px'>
         <Link as={RouterLink} to='/about' color='white'>

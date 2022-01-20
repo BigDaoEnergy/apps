@@ -10,7 +10,7 @@ function Layout({ children }: Props) {
   return (
     <>
       <Navbar />
-      <Container>
+      <Container maxW='container.xl'>
         <Center height={'91.4vh'}>{children}</Center>
       </Container>
     </>

@@ -14,11 +14,8 @@ import { SiReadthedocs } from 'react-icons/si';
 
 import { useWeb3Modal } from '../hooks';
 
-interface Props {
-  provider?: Web3Provider | (() => Promise<void>);
-}
-
-function BluelistInput({ provider }: Props) {
+function BluelistInput() {
+  const [provider] = useWeb3Modal();
   const handleBluelist = useCallback(() => {}, []);
 
   return (
@@ -35,14 +32,12 @@ function BluelistInput({ provider }: Props) {
 }
 
 function Landing() {
-  const [provider] = useWeb3Modal();
-
   return (
-    <VStack direction={'column'} alignItems={'center'} width='3xl'>
+    <VStack direction={'column'} alignItems={'center'} width='240'>
       <Heading size='3xl' color='whiteAlpha.900' marginBottom='15px'>
         We build composable governance legos.
       </Heading>
-      <BluelistInput provider={provider} />
+      <BluelistInput />
       <Center>
         <HStack spacing='24px' marginTop='30'>
           <Icon as={FaDiscord} color='whiteAlpha.900' />
