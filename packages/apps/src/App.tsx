@@ -4,19 +4,22 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { theme } from './shared/theme';
 import { About, Landing, Layout, Team } from './pages';
+import { BDEContextProvider } from './contexts/BDEContext';
 
 // Do this at the root of your application
 function App() {
   return (
     <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <Layout>
-          <Routes>
-            <Route path='/' element={<Landing />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/team' element={<Team />} />
-          </Routes>
-        </Layout>
+        <BDEContextProvider>
+          <Layout>
+            <Routes>
+              <Route path='/' element={<Landing />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/team' element={<Team />} />
+            </Routes>
+          </Layout>
+        </BDEContextProvider>
       </ChakraProvider>
     </BrowserRouter>
   );

@@ -1,39 +1,20 @@
-import { Contract, ethers } from 'ethers';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   Center,
   HStack,
   Heading,
   Icon,
   VStack,
-  Text,
   Button,
 } from '@chakra-ui/react';
 import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
 import { SiReadthedocs } from 'react-icons/si';
 
-import { useWeb3Modal } from '../hooks';
-import { BDE_ABI, BDE_ADDRESS } from '../shared/contracts';
+import { BDEContext } from '../contexts/BDEContext';
 
 function BluelistInput() {
-  const { provider } = useWeb3Modal();
-  const [bdeContract, setBDEContract] = useState<Contract>();
+  const { bdeContract } = useContext(BDEContext);
   const [amIWhitelisted, setAmiW] = useState<boolean>();
-
-  useEffect(() => {
-    async function getContract() {
-      if (provider) {
-        const contract = await new ethers.Contract(
-          BDE_ADDRESS,
-          BDE_ABI,
-          provider.getSigner()
-        );
-        setBDEContract(contract);
-      }
-    }
-
-    getContract();
-  }, [provider]);
 
   useEffect(() => {
     async function amIWhitelisted() {
@@ -64,7 +45,7 @@ function BluelistInput() {
       ) : (
         <Button
           className='button-secondary'
-          disabled={!provider}
+          disabled={!bdeContract}
           onClick={() => handleBluelist()}
         >
           Bluelist Me!
