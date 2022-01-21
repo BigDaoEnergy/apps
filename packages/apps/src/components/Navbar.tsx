@@ -6,7 +6,7 @@ import { ConnectWeb3Button } from '.';
 import { useWeb3Modal } from '../hooks';
 
 const NavBar = () => {
-  const [provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();
+  const { provider, loadWeb3Modal, logoutOfWeb3Modal } = useWeb3Modal();
 
   return (
     <HStack justifyContent={'space-between'}>

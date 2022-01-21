@@ -11,24 +11,27 @@ function ConnectWeb3Button({
 
   useEffect(() => {
     async function fetchAccount() {
+      if (!provider) {
+        return;
+      }
+
+      // Load the user's accounts.
+      const accounts = await provider.listAccounts();
+
+      console.log(accounts);
+
+      setAccount(accounts[0]);
       try {
-        if (!provider) {
-          return;
-        }
-
-        // Load the user's accounts.
-        const accounts = await provider.listAccounts();
-        setAccount(accounts[0]);
-
         // Resolve the ENS name for the first account.
-        const name = await provider.lookupAddress(accounts[0]);
+        // const name = await provider.lookupAddress(accounts[0]);
 
         // Render either the ENS name or the shortened account address.
-        if (name) {
-          setRendered(name);
-        } else {
-          setRendered(account.substring(0, 6) + '...' + account.substring(36));
-        }
+        // if (name) {
+        //   setRendered(name);
+        // } else {
+        //   setRendered(account.substring(0, 6) + '...' + account.substring(36));
+        // }
+        setRendered(account.substring(0, 6) + '...' + account.substring(36));
       } catch (err) {
         setAccount('');
         setRendered('');
@@ -36,7 +39,7 @@ function ConnectWeb3Button({
       }
     }
     fetchAccount();
-  }, [account, provider, setAccount, setRendered]);
+  }, [account, provider]);
 
   return (
     <Button

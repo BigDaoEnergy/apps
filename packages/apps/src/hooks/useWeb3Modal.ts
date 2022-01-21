@@ -8,9 +8,15 @@ import Web3Modal from 'web3modal';
 // You can get a key for free at https://infura.io/register
 // const INFURA_ID = 'INVALID_INFURA_KEY';
 
-const NETWORK = 'mainnet';
+const NETWORK = 'localhost';
 
-function useWeb3Modal(config: any = {}) {
+interface ReturnType {
+  provider?: Web3Provider;
+  loadWeb3Modal: () => Promise<void>;
+  logoutOfWeb3Modal: () => Promise<void>;
+}
+
+function useWeb3Modal(config: any = {}): ReturnType {
   const [provider, setProvider] = useState<Web3Provider>();
   const [autoLoaded, setAutoLoaded] = useState(false);
   const { autoLoad = true, network = NETWORK } = config;
@@ -19,11 +25,10 @@ function useWeb3Modal(config: any = {}) {
   // You can see other options at https://github.com/Web3Modal/web3modal
   const web3Modal = useMemo(() => {
     return new Web3Modal({
-      network,
       cacheProvider: true,
       providerOptions: {},
     });
-  }, [network]);
+  }, []);
 
   // Open wallet selection modal.
   const loadWeb3Modal = useCallback(async () => {
@@ -53,7 +58,7 @@ function useWeb3Modal(config: any = {}) {
     web3Modal.cachedProvider,
   ]);
 
-  return [provider, loadWeb3Modal, logoutOfWeb3Modal];
+  return { provider, loadWeb3Modal, logoutOfWeb3Modal };
 }
 
 export default useWeb3Modal;

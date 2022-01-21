@@ -1,5 +1,5 @@
-import { Web3Provider } from '@ethersproject/providers';
-import React, { useCallback } from 'react';
+import { Contract, ethers } from 'ethers';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Center,
   HStack,
@@ -13,20 +13,63 @@ import { FaDiscord, FaEthereum, FaTwitter } from 'react-icons/fa';
 import { SiReadthedocs } from 'react-icons/si';
 
 import { useWeb3Modal } from '../hooks';
+import { BDE_ABI, BDE_ADDRESS } from '../shared/contracts';
 
 function BluelistInput() {
-  const [provider] = useWeb3Modal();
-  const handleBluelist = useCallback(() => {}, []);
+  const { provider } = useWeb3Modal();
+  const [bdeContract, setBDEContract] = useState<Contract>();
+  const [amIWhitelisted, setAmiW] = useState<boolean>();
+
+  useEffect(() => {
+    async function getContract() {
+      if (provider) {
+        const contract = await new ethers.Contract(
+          BDE_ADDRESS,
+          BDE_ABI,
+          provider.getSigner()
+        );
+        setBDEContract(contract);
+      }
+    }
+
+    getContract();
+  }, [provider]);
+
+  useEffect(() => {
+    async function amIWhitelisted() {
+      if (bdeContract) {
+        const amiw = await bdeContract.amIWhitelisted();
+
+        setAmiW(amiw);
+      }
+    }
+
+    amIWhitelisted();
+  }, [bdeContract]);
+
+  const handleBluelist = useCallback(async () => {
+    if (bdeContract) {
+      try {
+        await bdeContract.joinWhitelist();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [bdeContract]);
 
   return (
     <VStack justifyContent='center'>
-      <Button
-        className='button-secondary'
-        disabled={!provider}
-        onClick={() => handleBluelist()}
-      >
-        Bluelist Me!
-      </Button>
+      {amIWhitelisted ? (
+        <Button>You Are On The Whitelist!</Button>
+      ) : (
+        <Button
+          className='button-secondary'
+          disabled={!provider}
+          onClick={() => handleBluelist()}
+        >
+          Bluelist Me!
+        </Button>
+      )}
     </VStack>
   );
 }
