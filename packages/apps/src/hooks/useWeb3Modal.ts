@@ -29,7 +29,7 @@ function useWeb3Modal(config: any = {}): ReturnType {
       providerOptions: {},
       network,
     });
-  }, []);
+  }, [network]);
 
   // Open wallet selection modal.
   const loadWeb3Modal = useCallback(async () => {
