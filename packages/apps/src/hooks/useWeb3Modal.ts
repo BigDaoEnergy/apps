@@ -27,6 +27,7 @@ function useWeb3Modal(config: any = {}): ReturnType {
     return new Web3Modal({
       cacheProvider: true,
       providerOptions: {},
+      network,
     });
   }, []);
 

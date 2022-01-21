@@ -1,4 +1,4 @@
-import { Link, HStack, Heading, Image } from '@chakra-ui/react';
+import { Link, HStack, Image } from '@chakra-ui/react';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
