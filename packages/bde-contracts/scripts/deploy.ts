@@ -5,7 +5,7 @@
 // Runtime Environment's members available in the global scope.
 import { ethers } from 'hardhat';
 
-const SUPPLY_CAP = 100000000;
+// const SUPPLY_CAP = 100000000;
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -17,7 +17,7 @@ async function main() {
 
   // We get the contract to deploy
   const BigDaoEnergy = await ethers.getContractFactory('BigDaoEnergy');
-  const BDE = await BigDaoEnergy.deploy('Big DAO Energy', 'BDE', SUPPLY_CAP);
+  const BDE = await BigDaoEnergy.deploy();
 
   await BDE.deployed();
 

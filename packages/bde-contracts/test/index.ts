@@ -4,8 +4,9 @@ import { ethers } from 'hardhat';
 
 import { BigDaoEnergy } from '../typechain';
 
-const CAP = 100000000; // 100 million
-const INITIAL_SUPPLY = 69000000; // 69 million
+const COUNCIL_SEATS = 10;
+const VOTE_TOKEN_SUPPLY = 10_000_000;
+const SHARES_SUPPLY = 69_000_000;
 
 describe('Big DAO Energy Token', function () {
   let BDE: BigDaoEnergy;
@@ -15,7 +16,7 @@ describe('Big DAO Energy Token', function () {
 
   before(async () => {
       const BDEFactory = await ethers.getContractFactory('BigDaoEnergy');
-      const instance = await BDEFactory.deploy("BigDAOenergy", "BDE", CAP);
+      const instance = await BDEFactory.deploy();
       await instance.deployed();
       BDE = instance;
 
@@ -24,17 +25,10 @@ describe('Big DAO Energy Token', function () {
 
   describe('Whitelist', async function () {
     it("should have correct initial state", async function () {
-      expect(await BDE.cap()).to.equal(CAP);
-      expect(await BDE.totalSupply()).to.equal(0);
+      expect(await BDE.getCouncilSeatsCount()).to.equal(COUNCIL_SEATS);
+      expect(await BDE.getVoteTokensCount()).to.equal(VOTE_TOKEN_SUPPLY);
+      expect(await BDE.getShareTokensCount()).to.equal(SHARES_SUPPLY);
     });
-
-    it('should mint', async function() {
-      expect(await BDE.connect(ALICE).initialMint(INITIAL_SUPPLY)).to.emit(BDE, "Transfer");
-      
-      expect(await BDE.totalSupply()).to.equal(INITIAL_SUPPLY);
-
-      expect(await BDE.balanceOf(ALICE.address)).to.equal(INITIAL_SUPPLY);
-    })
 
     it('should join whitelist', async function() {
       expect(await BDE.connect(ALICE).joinWhitelist()).to.emit(BDE, "JoinedWhitelist");

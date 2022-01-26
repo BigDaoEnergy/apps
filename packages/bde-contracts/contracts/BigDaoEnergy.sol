@@ -17,11 +17,11 @@ contract BigDaoEnergy is ERC1155, Ownable {
   mapping(address => bool) whitelist;
   uint256 whitelistCount = 0;
 
-  uint256 COUNCIL_KEY_SUPPLY = 10;
+  uint256 COUNCIL_SEATS = 10;
   uint256 VOTE_TOKEN_SUPPLY = 10_000_000;
   uint256 SHARES_SUPPLY = 69_000_000;
 
-  uint256 public constant COUNCIL_KEY_ID = 0;
+  uint256 public constant COUNCIL_SEAT_ID = 0;
   uint256 public constant VOTE_TOKEN_ID = 1;
   uint256 public constant SHARES_ID = 2;
 
@@ -49,9 +49,21 @@ contract BigDaoEnergy is ERC1155, Ownable {
   }
 
   constructor() ERC1155('https://bigdaoenergy.com/api/v1/{item}.json') {
-    _mint(msg.sender, COUNCIL_KEY_ID, COUNCIL_KEY_SUPPLY, '');
+    _mint(msg.sender, COUNCIL_SEAT_ID, COUNCIL_SEATS, '');
     _mint(msg.sender, VOTE_TOKEN_ID, VOTE_TOKEN_SUPPLY, '');
     _mint(msg.sender, SHARES_ID, SHARES_SUPPLY, '');
+  }
+
+  function getCouncilSeatsCount() external view returns (uint256) {
+    return COUNCIL_SEATS;
+  }
+
+  function getVoteTokensCount() external view returns (uint256) {
+    return VOTE_TOKEN_SUPPLY;
+  }
+
+  function getShareTokensCount() external view returns (uint256) {
+    return SHARES_SUPPLY;
   }
 
   function joinWhitelist() external {
