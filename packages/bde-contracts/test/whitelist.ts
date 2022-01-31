@@ -1,30 +1,9 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { ethers, network } from 'hardhat';
+import { ethers } from 'hardhat';
 
 import { BigDaoEnergy } from '../typechain';
-
-const COUNCIL_SEATS = 10;
-const VOTE_TOKEN_SUPPLY = 10_000_000;
-const SHARES_SUPPLY = 69_000_000;
-
-const BAYC_OWNER = "0xd83e662B83880081741D0E810c3Fe8630fa6Cb4d";
-const MAYC_OWNER = "0xE9Cee167c8f8B0741120683C5b32B69FF0636BDF";
-const GCG_OWNER = "0x8e3DA7C7e530e0E3204b74FC4495Fc918dFd26ac";
-const ENS_OWNER = "0x991d540e7ECFa15dBe3F52d0f758010DBec85F6D";
-
-
-async function impersonate(address: string): Promise<SignerWithAddress> {
-    // impersonate guy who owns APEs
-  await network.provider.request({
-    method: "hardhat_impersonateAccount",
-    params: [address],
-  });
-
-  let signer = await ethers.getSigner(address);
-
-  return signer;
-}
+import { BAYC_OWNER, COUNCIL_SEATS, ENS_OWNER, GCG_OWNER, impersonate, MAYC_OWNER, SHARES_SUPPLY, VOTE_TOKEN_SUPPLY } from './utils';
 
 describe('Big DAO Energy Token', function () {
   let BDE: BigDaoEnergy;
