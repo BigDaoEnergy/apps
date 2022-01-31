@@ -2,9 +2,10 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers, network } from 'hardhat';
 
 import { BigDaoEnergy } from '../typechain';
+import { getSnapshotVotersOfTop20DAOsByAUM } from './utils';
 
 
-describe('Big DAO Energy Token', function () {
+describe('Airdrop', function () {
   let BDE: BigDaoEnergy;
   let ALICE: SignerWithAddress;
   let BOB: SignerWithAddress;
@@ -19,6 +20,7 @@ describe('Big DAO Energy Token', function () {
       [ALICE, BOB, CHARLIE] = await ethers.getSigners();
   })
 
-  describe('Airdrop', async function () {
+	it.only('should distribute BDE token to everyone in approved snapshot', async function () {
+		await getSnapshotVotersOfTop20DAOsByAUM();
 	})
 });

@@ -5,7 +5,7 @@ import { ethers } from 'hardhat';
 import { BigDaoEnergy } from '../typechain';
 import { BAYC_OWNER, COUNCIL_SEATS, ENS_OWNER, GCG_OWNER, impersonate, MAYC_OWNER, SHARES_SUPPLY, VOTE_TOKEN_SUPPLY } from './utils';
 
-describe('Big DAO Energy Token', function () {
+describe('Whitelist', function () {
   let BDE: BigDaoEnergy;
   let ALICE: SignerWithAddress;
   let BOB: SignerWithAddress;
@@ -20,54 +20,52 @@ describe('Big DAO Energy Token', function () {
       [ALICE, BOB, CHARLIE] = await ethers.getSigners();
   })
 
-  describe('Whitelist', async function () {
-    it("should have correct initial state", async function () {
-      expect(await BDE.getCouncilSeatsCount()).to.equal(COUNCIL_SEATS);
-      expect(await BDE.getVoteTokensCount()).to.equal(VOTE_TOKEN_SUPPLY);
-      expect(await BDE.getShareTokensCount()).to.equal(SHARES_SUPPLY);
-    });
+  it("should have correct initial state", async function () {
+    expect(await BDE.getCouncilSeatsCount()).to.equal(COUNCIL_SEATS);
+    expect(await BDE.getVoteTokensCount()).to.equal(VOTE_TOKEN_SUPPLY);
+    expect(await BDE.getShareTokensCount()).to.equal(SHARES_SUPPLY);
+  });
 
-    it('should not allow no-NFTer to join', async function () {
-      // doesn't own shit
-      expect(BDE.connect(ALICE).joinWhitelist()).to.be.revertedWith("must own a valid NFT or ENS to join");
-    })
+  it('should not allow no-NFTer to join', async function () {
+    // doesn't own shit
+    expect(BDE.connect(ALICE).joinWhitelist()).to.be.revertedWith("must own a valid NFT or ENS to join");
+  })
 
-    it('should allow BAYC holder to join whitelist', async function () {
-      const signer = await impersonate(BAYC_OWNER);
+  it('should allow BAYC holder to join whitelist', async function () {
+    const signer = await impersonate(BAYC_OWNER);
 
-      try {
-        expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
-      } catch (e) {
+    try {
+      expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
+    } catch (e) {
 
-      }
-    })
+    }
+  })
 
-    it('should allow MAYC holder to join whitelist', async function() {
-      const signer = await impersonate(MAYC_OWNER);
-      
-      try {
-        expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
-      } catch (e) {
+  it('should allow MAYC holder to join whitelist', async function() {
+    const signer = await impersonate(MAYC_OWNER);
+    
+    try {
+      expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
+    } catch (e) {
 
-      }
-    })
+    }
+  })
 
-    it('should allow GCG holder to join whitelist', async function() {
-      const signer = await impersonate(GCG_OWNER);
-      
-      try {
-        expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
-      } catch (e) {}
-      
-    })
+  it('should allow GCG holder to join whitelist', async function() {
+    const signer = await impersonate(GCG_OWNER);
+    
+    try {
+      expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
+    } catch (e) {}
+    
+  })
 
-    it('should allow ENS holder to join whitelist', async function() {
-      const signer = await impersonate(ENS_OWNER);
-      
-      try {
-        expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
-      } catch (e) {}
-      
-    })
+  it('should allow ENS holder to join whitelist', async function() {
+    const signer = await impersonate(ENS_OWNER);
+    
+    try {
+      expect(BDE.connect(signer).joinWhitelist()).to.emit(BDE, "JoinedWhitelist")
+    } catch (e) {}
+    
   })
 });
