@@ -5,7 +5,7 @@ import { ethers } from 'hardhat';
 import { BigDaoEnergy } from '../typechain';
 import { BAYC_OWNER, COUNCIL_SEATS, ENS_OWNER, GCG_OWNER, impersonate, MAYC_OWNER, SHARES_SUPPLY, VOTE_TOKEN_SUPPLY } from './utils';
 
-describe('Whitelist', function () {
+describe.only('Whitelist', function () {
   let BDE: BigDaoEnergy;
   let ALICE: SignerWithAddress;
   let BOB: SignerWithAddress;
@@ -24,6 +24,9 @@ describe('Whitelist', function () {
     expect(await BDE.getCouncilSeatsCount()).to.equal(COUNCIL_SEATS);
     expect(await BDE.getVoteTokensCount()).to.equal(VOTE_TOKEN_SUPPLY);
     expect(await BDE.getShareTokensCount()).to.equal(SHARES_SUPPLY);
+
+    expect(await BDE.balanceOf(BDE.address, 0)).to.equal(COUNCIL_SEATS);
+    expect(await BDE.balanceOf(BDE.address, 1)).to.equal(VOTE_TOKEN_SUPPLY);
   });
 
   it('should not allow no-NFTer to join', async function () {

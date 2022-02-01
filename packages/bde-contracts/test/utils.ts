@@ -151,16 +151,17 @@ export const TOP_DAOS_BY_AUM = [
 
 
 
-export async function getSnapshotVotersOfTop20DAOsByAUM() {
-  const addresses = new Set();
+export async function getSnapshotVotersOfTop20DAOsByAUM(): Promise<Array<string>> {
+  const addresses = new Set<string>();
 
   for await (let dao of TOP_DAOS_BY_AUM) {
     // const protocol = await axios.get(`${BOARDROOM_API}/protocols/${dao.protocol}`);
     const voters = await axios.get(`${BOARDROOM_API}/protocols/${dao.protocol}/voters`);
 
-    voters.data.data.map((voter: any) => addresses.add(voter.address));
+    voters.data.data.map((voter: any) => addresses.add(String(voter.address)));
   
     // const protocolContractAddress = protocol.data.data.tokens[0].contractAddress;
   }
-  console.log(addresses.values());
+
+  return Array.from(addresses.values());
 }

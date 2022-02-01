@@ -1,9 +1,9 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ethers, network } from 'hardhat';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
 import { BigDaoEnergy } from '../typechain';
 import { getSnapshotVotersOfTop20DAOsByAUM } from './utils';
-
 
 describe('Airdrop', function () {
   let BDE: BigDaoEnergy;
@@ -20,7 +20,10 @@ describe('Airdrop', function () {
       [ALICE, BOB, CHARLIE] = await ethers.getSigners();
   })
 
-	it.only('should distribute BDE token to everyone in approved snapshot', async function () {
-		await getSnapshotVotersOfTop20DAOsByAUM();
+
+	it('should distribute BDE token to everyone in approved snapshot', async function () {
+		const addresses = await getSnapshotVotersOfTop20DAOsByAUM();
+
+		expect(await BDE.connect(ALICE).airdrop(addresses)).to.be.true;
 	})
 });
