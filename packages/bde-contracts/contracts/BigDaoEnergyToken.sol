@@ -2,8 +2,11 @@
 pragma solidity ^0.8.0;
 
 import 'hardhat/console.sol';
+import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
 import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol';
 import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol';
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 
 interface IBAYC {
   function balanceOf(address owner) external view returns (uint256 balance);
@@ -21,7 +24,9 @@ interface IENS {
   function balanceOf(address owner) external view returns (uint256 balance);
 }
 
-contract BigDaoEnergy is ERC20Burnable {
+contract BigDaoEnergy is ERC1155 {
+  bytes32 public immutable root;
+
   address BAYC_ADDRESS = 0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D;
   address MAYC_ADDRESS = 0x60E4d786628Fea6478F785A6d7e704777c86a7c6;
   address GCG_ADDRESS = 0xEdB61f74B0d09B2558F1eeb79B247c1F363Ae452;
@@ -71,15 +76,47 @@ contract BigDaoEnergy is ERC20Burnable {
     _;
   }
 
-  constructor() ERC20('BigDaoEnergy', 'BDE') {
+  constructor(bytes32 merkleroot) ERC1155('https://api.bigdaoenergy.com/v1/') {
     deployer = msg.sender;
+    root = merkleroot;
 
-    _mint(address(this), COUNCIL_SEATS);
-    _mint(address(this), TOKEN_SUPPLY);
+    _mint(address(this), COUNCIL_SEAT_ID, COUNCIL_SEATS, '');
+    _mint(address(this), VOTE_TOKEN_ID, TOKEN_SUPPLY, '');
+  }
+
+  function _leaf(address account, uint256 tokenId)
+    internal
+    pure
+    returns (bytes32)
+  {
+    return keccak256(abi.encodePacked(tokenId, account));
+  }
+
+  function _verify(bytes32 leaf, bytes32[] memory proof)
+    internal
+    view
+    returns (bool)
+  {
+    return MerkleProof.verify(proof, root, leaf);
   }
 
   function getCouncilSeatsCount() external view returns (uint256) {
     return COUNCIL_SEATS;
+  }
+
+  function getVoteTokensCount() external view returns (uint256) {
+    return TOKEN_SUPPLY;
+  }
+
+  function redeem(
+    address account,
+    uint256 amount,
+    uint256 tokenId,
+    bytes32[] calldata proof
+  ) external {
+    require(_verify(_leaf(account, tokenId), proof), 'Invalid merkle proof');
+
+    _mint(account, tokenId, amount, '');
   }
 
   function joinWhitelist() external returns (bool) {
@@ -109,15 +146,12 @@ contract BigDaoEnergy is ERC20Burnable {
     return true;
   }
 
-  function amIWhitelisted() external view returns (bool) {
-    return isWhitelisted[msg.sender];
+  function burn(uint256 amount) public virtual {
+    _burn(msg.sender, VOTE_TOKEN_ID, amount);
   }
 
-  /**
-   * @return if minting is finished or not.
-   */
-  function mintingFinished() public view returns (bool) {
-    return _mintingFinished;
+  function amIWhitelisted() external view returns (bool) {
+    return isWhitelisted[msg.sender];
   }
 
   /**
@@ -125,15 +159,6 @@ contract BigDaoEnergy is ERC20Burnable {
    */
   function transferEnabled() public view returns (bool) {
     return _transferEnabled;
-  }
-
-  /**
-   * @dev Function to stop minting new tokens.
-   */
-  function finishMinting() public canMint onlyDeployer {
-    _mintingFinished = true;
-
-    emit MintFinished();
   }
 
   /**

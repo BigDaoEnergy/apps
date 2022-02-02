@@ -7,11 +7,11 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol';
+import './BigDaoEnergyToken.sol';
 
 contract MerkleDrop {
   bytes32 public root;
-  ERC20Burnable public droppedToken;
+  BigDaoEnergy public droppedToken;
   uint256 public decayStartTime;
   uint256 public decayDurationInSeconds;
 
@@ -25,7 +25,7 @@ contract MerkleDrop {
   event Burn(uint256 value);
 
   constructor(
-    ERC20Burnable _droppedToken,
+    BigDaoEnergy _droppedToken,
     uint256 _initialBalance,
     bytes32 _root,
     uint256 _decayStartTime,
@@ -40,7 +40,12 @@ contract MerkleDrop {
     decayDurationInSeconds = _decayDurationInSeconds;
   }
 
-  function withdraw(uint256 value, bytes32[] memory proof) public {
+  function withdraw(
+    address treasury,
+    uint256 amount,
+    uint256 value,
+    bytes32[] memory proof
+  ) public {
     require(
       verifyEntitled(msg.sender, value, proof),
       'The proof could not be verified.'
@@ -59,7 +64,7 @@ contract MerkleDrop {
     );
     assert(valueToSend <= value);
     require(
-      droppedToken.balanceOf(address(this)) >= valueToSend,
+      droppedToken.balanceOf(address(this), 1) >= valueToSend,
       'The MerkleDrop does not have tokens to drop yet / anymore.'
     );
     require(valueToSend != 0, 'The decayed entitled value is now zero.');
@@ -68,7 +73,7 @@ contract MerkleDrop {
     remainingValue -= value;
     spentTokens += valueToSend;
 
-    require(droppedToken.transfer(msg.sender, valueToSend));
+    droppedToken.safeTransferFrom(treasury, msg.sender, 1, amount, '');
     emit Withdraw(msg.sender, valueToSend, value);
   }
 
