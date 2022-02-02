@@ -2,7 +2,8 @@ import { ethers } from 'hardhat';
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 import { expect } from 'chai';
-import tokens from './tokens.json';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { Contract } from 'ethers';
 
 async function deploy(name: string, ...params: any) {
   const Contract = await ethers.getContractFactory(name);
@@ -13,15 +14,42 @@ function hashToken(tokenId: number, account: string) {
   return Buffer.from(ethers.utils.solidityKeccak256(['uint256', 'address'], [tokenId, account]).slice(2), 'hex')
 }
 
-describe('ERC721MerkleDrop', function () {
-  before(async function() {
-    this.accounts = await ethers.getSigners();
-    this.merkleTree = new MerkleTree(Object.entries(tokens).map(token => hashToken(...token)), keccak256, { sortPairs: true });
-  });
+describe('MerkleDrop', function () {
+  let tokens = {};
+  let accounts: SignerWithAddress[] = [];
+  let merkleTree: MerkleTree;
+  let root: string;
+  let registry: Contract;
+  let bdeToken: Contract;
 
-  describe('Mint all elements', function () {
+  before(async () => {
+    accounts = await ethers.getSigners();
+
+    tokens = {
+      0: accounts[0].address,
+      1: accounts[1].address,
+      2: accounts[2].address,
+      3: accounts[3].address,
+      4: accounts[4].address,
+      5: accounts[5].address,
+    }
+
+    merkleTree = new MerkleTree(Object.entries(tokens).map(token => hashToken(Number(token[0]), String(token[1]))), keccak256, { sortPairs: true });
+
+    root = merkleTree.getHexRoot();
+
+    const instance = await deploy('BigDaoEnergy', root);
+    await instance.deployed();
+    bdeToken = instance;
+  })
+
+  it('sanity check', () => {
+    expect(root).to.equal('0xbfd107453ad668c028ae3e24b44e2efa2e665eba0cab99005fbe9bf1694fcf5c');
+  })
+
+  describe('Mint All Elements', async () => {
     before(async function() {
-      this.registry = await deploy('ERC721MerkleDrop', 'Name', 'Symbol', this.merkleTree.getHexRoot());
+      registry = await deploy('MerkleDrop', bdeToken, 12345, merkleTree.getHexRoot(), 123, 123);
     });
 
     for (const [tokenId, account] of Object.entries(tokens)) {
@@ -29,50 +57,53 @@ describe('ERC721MerkleDrop', function () {
         /**
          * Create merkle proof (anyone with knowledge of the merkle tree)
          */
-        const proof = this.merkleTree.getHexProof(hashToken(tokenId, account));
+        const proof = merkleTree.getHexProof(hashToken(Number(tokenId), String(account)));
         /**
          * Redeems token using merkle proof (anyone with the proof)
          */
-        await expect(this.registry.redeem(account, tokenId, proof))
-          .to.emit(this.registry, 'Transfer')
+        await expect(registry.redeem(account, tokenId, proof))
+          .to.emit(registry, 'Transfer')
           .withArgs(ethers.constants.AddressZero, account, tokenId);
       });
     }
-  });
+  })
 
-  describe('Duplicate mint', function () {
-    before(async function() {
-      this.registry = await deploy('ERC721MerkleDrop', 'Name', 'Symbol', this.merkleTree.getHexRoot());
+  // describe('Duplicate mint', function () {
+  //   let token: Record<string, any> = {};
+  //   before(async () => {
+  //     const instance = await deploy('BigDaoEnergy', root);
+  //     await instance.deployed();
+  //     bdeToken = instance;
+  //     // BigDaoEnergy _droppedToken,
+  //     // uint256 _initialBalance,
+  //     // bytes32 _root,
+  //     // uint256 _decayStartTime,
+  //     // uint256 _decayDurationInSeconds
+  //     registry = await deploy('MerkleDrop', bdeToken, 12345, merkleTree.getHexRoot(), 123, 123);
 
-      this.token = {};
-      [ this.token.tokenId, this.token.account ] = Object.entries(tokens).find(Boolean);
-      this.token.proof = this.merkleTree.getHexProof(hashToken(this.token.tokenId, this.token.account));
-    });
+  //     // @eslint-ignore
+  //     token = {
+  //       tokenId: 0,
+  //       account: accounts[0].address,
+  //       proof: ['']
+  //     }
+  //     // token.proof = merkleTree.getHexProof(hashToken(token.tokenId, token.account));
 
-    it('mint once - success', async function () {
-      await expect(this.registry.redeem(this.token.account, this.token.tokenId, this.token.proof))
-        .to.emit(this.registry, 'Transfer')
-        .withArgs(ethers.constants.AddressZero, this.token.account, this.token.tokenId);
-    });
+  //   });
 
-    it('mint twice - failure', async function () {
-      await expect(this.registry.redeem(this.token.account, this.token.tokenId, this.token.proof))
-        .to.be.revertedWith('ERC721: token already minted');
-    });
-  });
+  //   it('should pass', async () => {
+  //     console.log(token)
+  //   })
 
-  describe('Frontrun', function () {
-    before(async function() {
-      this.registry = await deploy('ERC721MerkleDrop', 'Name', 'Symbol', this.merkleTree.getHexRoot());
+    // it('mint once - success', async function () {
+    //   await expect(registry.redeem(token.account, token.tokenId, token.proof))
+    //     .to.emit(registry, 'Transfer')
+    //     .withArgs(ethers.constants.AddressZero, token.account, token.tokenId);
+    // });
 
-      this.token = {};
-      [ this.token.tokenId, this.token.account ] = Object.entries(tokens).find(Boolean);
-      this.token.proof = this.merkleTree.getHexProof(hashToken(this.token.tokenId, this.token.account));
-    });
-
-    it('prevented', async function () {
-      await expect(this.registry.redeem(this.accounts[0].address, this.token.tokenId, this.token.proof))
-        .to.be.revertedWith('Invalid merkle proof');
-    });
-  });
+    // it('mint twice - failure', async function () {
+    //   await expect(registry.redeem(token.account, token.tokenId, token.proof))
+    //     .to.be.revertedWith('ERC721: token already minted');
+    // });
+  // });  
 });
