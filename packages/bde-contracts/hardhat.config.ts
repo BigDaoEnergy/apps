@@ -21,12 +21,16 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
-
+console.log('process.env.ALCHEMY_KEY => ', process.env.ALCHEMY_KEY);
 const config: HardhatUserConfig = {
   solidity: '0.8.4',
   networks: {
     hardhat: {
       chainId: 1337,
+      forking: {
+        blockNumber: 14114640,
+        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      },
     },
     ropsten: {
       url: process.env.ROPSTEN_URL || '',
