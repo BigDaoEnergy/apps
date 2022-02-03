@@ -38,20 +38,18 @@ describe('MerkleDrop', function () {
 
     root = merkleTree.getHexRoot();
 
-    const instance = await deploy('BigDaoEnergy', root);
+    const instance = await deploy('BigDaoEnergy', 'BigDAOEnergy', 'BDE', root);
     await instance.deployed();
     bdeToken = instance;
+
+    registry = await deploy('MerkleDrop', bdeToken.address, 12345, merkleTree.getHexRoot(), 123, 123);
   })
 
   it('sanity check', () => {
     expect(root).to.equal('0xbfd107453ad668c028ae3e24b44e2efa2e665eba0cab99005fbe9bf1694fcf5c');
-  })
+  });
 
-  describe('Mint All Elements', async () => {
-    before(async function() {
-      registry = await deploy('MerkleDrop', bdeToken, 12345, merkleTree.getHexRoot(), 123, 123);
-    });
-
+  it('Should Mint All Elements', async () => {
     for (const [tokenId, account] of Object.entries(tokens)) {
       it('element', async function () {
         /**

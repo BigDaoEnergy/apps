@@ -5,7 +5,7 @@ import { ethers } from 'hardhat';
 import { BigDaoEnergy } from '../typechain';
 import { BAYC_OWNER, COUNCIL_SEATS, ENS_OWNER, GCG_OWNER, impersonate, MAYC_OWNER, SHARES_SUPPLY, VOTE_TOKEN_SUPPLY } from './utils';
 
-describe.only('Whitelist', function () {
+describe.skip('Whitelist', function () {
   let BDE: BigDaoEnergy;
   let ALICE: SignerWithAddress;
   let BOB: SignerWithAddress;

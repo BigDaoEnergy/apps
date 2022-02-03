@@ -30,7 +30,7 @@ contract MerkleDrop {
     bytes32 _root,
     uint256 _decayStartTime,
     uint256 _decayDurationInSeconds
-  ) public {
+  ) {
     // The _initialBalance should be equal to the sum of airdropped tokens
     droppedToken = _droppedToken;
     initialBalance = _initialBalance;
@@ -64,7 +64,7 @@ contract MerkleDrop {
     );
     assert(valueToSend <= value);
     require(
-      droppedToken.balanceOf(address(this), 1) >= valueToSend,
+      droppedToken.balanceOf(address(this)) >= valueToSend,
       'The MerkleDrop does not have tokens to drop yet / anymore.'
     );
     require(valueToSend != 0, 'The decayed entitled value is now zero.');
@@ -73,7 +73,7 @@ contract MerkleDrop {
     remainingValue -= value;
     spentTokens += valueToSend;
 
-    droppedToken.safeTransferFrom(treasury, msg.sender, 1, amount, '');
+    droppedToken.transferFrom(treasury, msg.sender, amount);
     emit Withdraw(msg.sender, valueToSend, value);
   }
 
