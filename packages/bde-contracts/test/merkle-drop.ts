@@ -14,6 +14,8 @@ function hashToken(tokenId: number, account: string) {
   return Buffer.from(ethers.utils.solidityKeccak256(['uint256', 'address'], [tokenId, account]).slice(2), 'hex')
 }
 
+const SUPPLY = 10_000_000;
+
 describe('MerkleDrop', function () {
   let tokens = {};
   let accounts: SignerWithAddress[] = [];
@@ -38,34 +40,63 @@ describe('MerkleDrop', function () {
 
     root = merkleTree.getHexRoot();
 
-    const instance = await deploy('BigDaoEnergy', root);
+    const instance = await deploy('BigDaoEnergy', root, SUPPLY);
     await instance.deployed();
     bdeToken = instance;
   })
 
-  it('sanity check', () => {
-    expect(root).to.equal('0xbfd107453ad668c028ae3e24b44e2efa2e665eba0cab99005fbe9bf1694fcf5c');
+  // it('sanity check', () => {
+  //   expect(root).to.equal('0xbfd107453ad668c028ae3e24b44e2efa2e665eba0cab99005fbe9bf1694fcf5c');
+  // })
+
+  it('Token Deploy Initial State', async () => {
+    const [deployerBalance, symbol, tokenSupply] = await Promise.all([
+      bdeToken.balanceOf(accounts[0].address),
+      bdeToken.symbol(),
+      bdeToken.totalSupply()
+    ]) ;
+
+    console.log(deployerBalance, symbol, tokenSupply);
+
+    expect(symbol).to.equal("BDE");
+    expect(tokenSupply).to.equal(SUPPLY);
+    expect(deployerBalance).to.equal(SUPPLY);
   })
 
   describe('Mint All Elements', async () => {
     before(async function() {
-      registry = await deploy('MerkleDrop', bdeToken, 12345, merkleTree.getHexRoot(), 123, 123);
+      registry = await deploy('MerkleDrop', bdeToken.address, 12345, merkleTree.getHexRoot(), 123, 123);
+
+      await registry.deployed();
     });
 
-    for (const [tokenId, account] of Object.entries(tokens)) {
-      it('element', async function () {
-        /**
-         * Create merkle proof (anyone with knowledge of the merkle tree)
-         */
-        const proof = merkleTree.getHexProof(hashToken(Number(tokenId), String(account)));
-        /**
-         * Redeems token using merkle proof (anyone with the proof)
-         */
-        await expect(registry.redeem(account, tokenId, proof))
-          .to.emit(registry, 'Transfer')
-          .withArgs(ethers.constants.AddressZero, account, tokenId);
-      });
-    }
+    it('should go', async () => {
+
+      for (const [tokenId, account] of Object.entries(tokens)) {
+        console.log('token id => ', tokenId);
+          /**
+           * Create merkle proof (anyone with knowledge of the merkle tree)
+           */
+          const proof = merkleTree.getHexProof(hashToken(Number(tokenId), String(account)));
+
+          console.log(account)
+          /**
+           * Redeems token using merkle proof (anyone with the proof)
+           */
+          await expect(bdeToken.redeem(account, 10, tokenId, proof))
+            .to.emit(bdeToken, 'Transfer')
+            .withArgs(ethers.constants.AddressZero, account, 10);
+      }
+    })
+
+    it('should have minted more to supply', async () => {
+      const deployerBalance = await bdeToken.balanceOf(accounts[0].address);
+      const supply = await bdeToken.totalSupply();
+
+      console.log('deployerBalance -> ', deployerBalance);
+
+      expect(Number(supply)).to.be.greaterThan(SUPPLY);
+    })
   })
 
   // describe('Duplicate mint', function () {
